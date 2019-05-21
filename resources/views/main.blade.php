@@ -4,7 +4,6 @@
     @include('partials._head')
 </head>
 <body>
-
 @include('partials._nav')
 
 <div class="container">

@@ -5,11 +5,11 @@
 @section('content')
     <div class="row">
         <div class="col-md-10">
-            <h1 class="text-light">All Posts</h1>
+            <h1 class="light_text">All Posts</h1>
         </div>
 
         <div class="col-md-2">
-            <a href="{{route('posts.create')}}" class="btn btn-success btn-h1">Create new post</a>
+            <a href="{{route('posts.create')}}" class="btn btn-success btn-h1">New post</a>
         </div>
     </div>
     <div class="row">
@@ -18,6 +18,7 @@
                 <thead>
                 <th>#</th>
                 <th>Title</th>
+                <th>Slug</th>
                 <th>Body</th>
                 <th>Created at</th>
                 </thead>
@@ -27,6 +28,7 @@
                         <tr class="postLine">
                             <th>{{$post->id}}</th>
                             <td>{{$post->title}}</td>
+                            <td>{{$post->slug}}</td>
                             <td>{{substr($post->body, 0, 50)}} {{strlen($post->body) > 150 ? "...":""}}</td>
                             <td>{{date('M j, Y H:i', strtotime($post->created_at))}}</td>
                             <td>

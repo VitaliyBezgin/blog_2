@@ -13,11 +13,33 @@
 
 
 
-Route::group(['middleware' => ['web']], function (){
-    Route::get('contact', 'PagesController@getContact');
-    Route::get('about', 'PagesController@getAbout');
-    Route::get('read', 'PagesController@getAbout');
-    Route::get('/', 'PagesController@getIndex');
 
-    Route::resource('posts', 'PostsCRUD\PostsController');
-});
+
+Route::get('article/{slug}', 'BlogController@getSingle')->name('single');
+Route::get('contact', 'PagesController@getContact');
+Route::post('contact', 'PagesController@postContact');
+Route::get('about', 'PagesController@getAbout');
+Route::get('read', 'PagesController@getAbout');
+Route::get('/', 'PagesController@getIndex');
+
+Route::resource('posts', 'PostsCRUD\PostsController');
+
+Route::resource('category', 'Categories\CategoryController', ['except' => ['create']]);
+Route::get('categories/{category_name}', 'Categories\CategoryController@show')->name('categoryArticles');
+Route::resource('tags', 'Tags\TagController', ['except' => ['create']]);
+
+Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+//Auth::routes();
+//
+//Route::get('/home', 'HomeController@index')->name('home');
+//
+//Auth::routes();
+//
+//Route::get('/home', 'HomeController@index')->name('home');

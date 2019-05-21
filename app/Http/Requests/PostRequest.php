@@ -25,6 +25,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|min:5|max:200|unique:posts',
+            'slug'  => 'required|min:5|max:200|unique:posts',
             'body'  => 'required|'
         ];
     }

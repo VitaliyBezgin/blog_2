@@ -9,13 +9,15 @@
                 </div>
             </div>
         </div>
-        <div class="row welcome_first_posts">
-            <p class="popular_title">Popular posts</p>
+        <div class="row welcome_first_posts light_text align-items-end bg-dark">
+            <p class="popular_title bg-dark">Popular posts</p>
             @foreach($posts as $post)
             <div class="col-md-3 postsAnimate">
-                    <h3>{{$post->title }}</h3>
-                    <p>{{substr($post->body, 0, 250)}} {{strlen($post->body) > 150 ? "...":""}}</p>
-{{--                    <a href="{{route('pages.single', $post->id)}}" class="btn btn-info">Read more</a>--}}
+                    <h4>{!! $post->title !!}</h4>
+                    <h5>{!! $post->slug !!}</h5>
+                    <hr class="bg-light">
+                    <p>{!! substr($post->body, 0, 250)!!} {!!strlen($post->body) > 150 ? "...":""!!}</p>
+                    <a href="{{route('single', $post->slug)}}" class="btn btn-info">Read more</a>
             </div>
             @endforeach
         </div>

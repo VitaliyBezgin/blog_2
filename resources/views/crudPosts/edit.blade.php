@@ -5,11 +5,17 @@
 @section('content')
     <div class="row m-3">
         @include('crudPosts.errors')
-        <div class="col-md-8">
+        <div class="col-md-8 text-light">
             {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT', 'data-parsley-validate']) !!}
             {{ Form::label('title', 'Title:') }}
             {{ Form::text('title', null, ["class" => 'form-control input-lg']) }}
-            {{ Form::label('body', 'Body:', ["class" => 'form-spacing-top']) }}
+            {{ Form::label('slug', 'Slug:') }}
+            {{ Form::text('slug', null, ["class" => 'form-control input-lg']) }}
+            {{Form::label('category_id', "Category:")}}
+            {{Form::select('category_id', $categories, null,  ['class' => 'form-control custom-select'])}}
+            {{Form::label('tags', 'Tags:', ['class' => 'form-spacing-top'])}}
+            {{Form::select('tags[]', $tags, null, ['class' => 'select2-multi form-control', 'multiple' => 'multiple'])}}
+            {{ Form::label('body', 'Body:') }}
             {{ Form::textarea('body', null, ["class" => 'form-control']) }}
         </div>
         <div class="col-md-4">

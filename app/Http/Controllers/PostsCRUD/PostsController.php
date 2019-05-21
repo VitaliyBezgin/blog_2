@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\PostsCRUD;
 
+use App\Category;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -12,6 +14,11 @@ use Illuminate\Support\Facades\Session;
 
 class PostsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +37,9 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('crudPosts.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('crudPosts.create', ['categories' => $categories])->withTags($tags);
     }
 
     /**
@@ -44,8 +53,13 @@ class PostsController extends Controller
 //        $post = new Post;
 //        Post::create($request->all());
         $post = new Post;
-        $post->fill($request->all());
+        $post->title = $request->title;
+        $post->slug = $request->slug;
+        $post->category_id = $request->category_id;
+        $post->body = $request->body;
         $post->save();
+
+        $post->tags()->sync($request->tags, false);
        return redirect()->route('posts.show', $post->id)->
                             with('success', 'The blog post was successfully save !');
        // return redirect()->back()->with('success', 'your message here');
@@ -73,7 +87,17 @@ class PostsController extends Controller
     {
         $post = Post::find($id);
 
-        return view('crudPosts.edit')->withPost($post);
+        $categories = Category::all();
+        $cats = [];
+        foreach ($categories as $category){
+            $cats[$category->id] = $category->category_name;
+        }
+        $tags = Tag::all();
+        $tagEmpty = [];
+        foreach ($tags as $tag){
+            $tagEmpty[$tag->id] = $tag->tag_name;
+        }
+        return view('crudPosts.edit')->withPost($post)->withCategories($cats)->withTags($tagEmpty);
     }
 
     /**
@@ -86,10 +110,30 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::find($id);
+        if($request->input('slug') == $post->slug )
+        {
+            $this->validate($request, [
+                'title' => 'required|min:5|max:200',
+                'body'  => 'required|'
+            ]);
+        }else{
+            $this->validate($request, [
+                'title' => 'required|min:5|max:200|unique:posts',
+                'slug'  => 'required|min:5|max:200|unique:posts',
+                'body'  => 'required|'
+            ]);
+        }
+        $post = Post::find($id);
         $post->fill($request->all());
         $post->save();
 
-        \session()->put('update', 'This post was successfully updated !!');
+//        if(isset($request->tags)){
+//            $post-tags()->sync($request->tags);
+//        }else{
+//            $post->tags()->sync(array());
+//        }
+
+        $post->tags()->sync($request->tags, true);
 
         return redirect()->route('posts.show', $post->id)->
         with('update', 'The blog post was successfully update!');
@@ -103,7 +147,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id)->delete();
+        $post = Post::find($id);
+        $post->tags()->detach();
+        $post->delete();
         return redirect()->route('posts.index')->
         with('delete', 'The blog post was successfully delete!');
     }
