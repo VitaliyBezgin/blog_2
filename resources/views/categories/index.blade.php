@@ -6,6 +6,7 @@
     <div class="container">
         <div class="row pt-4">
             <div class="col-md-8 text-light">
+                @include('crudPosts.errors')
                 <h2> Categories</h2>
                 <table class="table text-light">
                     <thead>
@@ -19,7 +20,7 @@
                     @foreach($categories as $category)
                         <tr>
                             <th>{{$category->id}}</th>
-                            <td><a href="{!! route('categoryArticles', $category->category_name) !!}">{{$category->category_name}}</a></td>
+                            <td><a href="{!! route('categoryArticles', $category->id) !!}">{{$category->category_name}}</a></td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -31,7 +32,7 @@
                         <h3>New category</h3>
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Category name:" required value="{{old('name')}}">
+                        <input type="text" id="name" name="category_name" class="form-control" placeholder="Category name:" required value="{{old('name')}}">
                     </div>
                     <input type="submit" value="Create" class="btn btn-info">
                     {!! Form::close() !!}

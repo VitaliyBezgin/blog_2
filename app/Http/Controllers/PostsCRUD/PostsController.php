@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Intervention\Image\Facades\Image;
 
 
 
@@ -57,11 +58,24 @@ class PostsController extends Controller
         $post->slug = $request->slug;
         $post->category_id = $request->category_id;
         $post->body = $request->body;
+
+        if($request->hasFile('featured_image')){
+            $image = $request->file('featured_image');
+
+            $fileName = time().'.'.$image->getClientOriginalExtension(); //encode('png')
+
+            $location = public_path('uploadImg/'.$fileName);
+
+            Image::make($image)->save($location); //->resize(800, 400)
+
+            $post->image = $fileName;
+        }
+
         $post->save();
 
         $post->tags()->sync($request->tags, false);
        return redirect()->route('posts.show', $post->id)->
-                            with('success', 'The blog post was successfully save !');
+                            with('success', "The $post->title post was successfully save !");
        // return redirect()->back()->with('success', 'your message here');
     }
 

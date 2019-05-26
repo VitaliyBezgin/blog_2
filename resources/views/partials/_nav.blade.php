@@ -38,23 +38,39 @@
                     @endif
                 @else
                     <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        <div class="user_photo_block float-left ">
+                            <img src="{{asset('profile_images/'.Auth::user()->user_image)}}" alt="" class="user_photo">
+                        </div>
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle float-left" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item text-info" href="{{url('posts')}}">Posts</a>
-                            <a class="dropdown-item text-info" href="{{url('category')}}">Category</a>
-                            <a class="dropdown-item text-info" href="{{url('tags')}}">Tags</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                               onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
+                            @if(Auth::user()->role == "admin")
+                                <a class="dropdown-item text-info" href="{{url('posts')}}">Posts</a>
+                                <a class="dropdown-item text-info" href="{{url('category')}}">Category</a>
+                                <a class="dropdown-item text-info" href="{{url('tags')}}">Tags</a>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @endif
+                                @if(Auth::user()->role == "user")
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                @endif
                         </div>
                     </li>
                 @endguest

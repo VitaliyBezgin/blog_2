@@ -16,19 +16,6 @@ class PagesController extends Controller
 
         $posts = Post::orderBy('created_at', 'desc')->limit(4)->get();
 
-//        $posts = [
-////            'top1' => Post::find(4),
-////            'top2' => Post::find(3),
-////            'top3' => Post::find(2),
-////            'top4' => Post::find(6),
-////        ];
-///
-//        $posts = [
-//            Post::find(2),
-//            Post::find(3),
-//            Post::find(4),
-//            Post::find(5),
-//        ];
         return view('pages.welcome')->withPosts($posts);
     }
     public function getContact()

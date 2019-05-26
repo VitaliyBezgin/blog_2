@@ -22,7 +22,6 @@
                 <th>Body</th>
                 <th>Created at</th>
                 </thead>
-                @include('partials._messages')
                 <tbody>
                     @foreach($posts as $post)
                         <tr class="postLine">

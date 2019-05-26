@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'body', 'category_id'
+        'title', 'slug', 'body'
     ];
 
     public function category()
@@ -18,4 +18,10 @@ class Post extends Model
     public function tags(){
         return $this->belongsToMany('App\Tag');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
+
 }

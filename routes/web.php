@@ -28,6 +28,12 @@ Route::resource('category', 'Categories\CategoryController', ['except' => ['crea
 Route::get('categories/{category_name}', 'Categories\CategoryController@show')->name('categoryArticles');
 Route::resource('tags', 'Tags\TagController', ['except' => ['create']]);
 
+Route::post('comments/{id}', 'Comments\CommentsController@store')->name('comments.store');
+Route::get('comments/{id}/edit', 'Comments\CommentsController@edit')->name('comments.edit');
+Route::put('comments/{id}/edit', 'Comments\CommentsController@update')->name('comments.update');
+Route::delete('comments/{id}/edit', 'Comments\CommentsController@destroy')->name('comments.destroy');
+
+
 Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');

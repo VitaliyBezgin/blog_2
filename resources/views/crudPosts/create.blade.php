@@ -12,7 +12,7 @@
             <h2 class="text-light mt-3">Create New Post</h2>
             @include('crudPosts.errors')
             <hr>
-            {!! Form::open(['method' => 'POST','route' => ['posts.store'], 'data-parsley-validate'])!!}
+            {!! Form::open(['method' => 'POST','route' => ['posts.store'], 'data-parsley-validate', 'files' => true])!!}
                 <div class="form-group">
                     <label for="title">Title:</label>
                     <input type="text" id="title" class="form-control" name="title" placeholder="Title" required value="{{old('title')}}">
@@ -38,6 +38,10 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="featured_image">Upload image</label>
+                    <input type="file" name="featured_image">
+                </div>
+                <div class="form-group">
                     <textarea name="body" id="body" cols="30" rows="10" class="form-control" value="{{old('title')}}" required placeholder="Post body..."></textarea>
                 </div>
             <input type="submit" value="Create" class="btn btn-dark btn-outline-info">
@@ -48,6 +52,8 @@
 
 @section('scripts')
     {!! Html::script('js/parsley.min.js') !!}
+{{--    <script src="https://cloud.tinymce.com/5/tinymce.min.js"></script>--}}
+{{--    <script>tinymce.init({selector:'textarea'});</script>--}}
     <script>
         $('.select2-multi').select2();
     </script>

@@ -3,9 +3,9 @@
 @section('title', 'View Post')
 
 @section('content')
-    @include('partials._messages')
     <div class="row mt-3 mb-2">
         <div class="col-md-8 text-light">
+            @include('partials.messages')
             <h1> {{$post->title}}</h1>
             <h3> {{$post->slug}}</h3>
             <h4>{{$post->category->category_name}}</h4>

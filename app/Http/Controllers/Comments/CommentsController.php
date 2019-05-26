@@ -1,36 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Categories;
+namespace App\Http\Controllers\Comments;
 
-use App\Category;
-use App\Post;
-use App\Tag;
-use DemeterChain\C;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
+use App\Comment;
+use App\Post;
+use App\User;
+use Illuminate\Http\Request;
 
-
-class CategoryController extends Controller
+class CommentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        // display all of our categories
-        // it also have a form to create category
-
-        $categories = Category::all();
-
-        return view('categories.index')->withCategories($categories);
+        //
     }
 
     /**
@@ -38,6 +25,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -47,15 +38,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //save a new category in database
         $this->validate($request, [
-            'category_name' => 'required|max:255|min:5|unique:categories'
+            'comment'   => 'required|min:5|max:2000'
         ]);
 
-        $category = new Category;
-        $category->category_name = $request->category_name;
-        $category->save();
-        return redirect()->back()->with('success', 'Category was successfully saved !');
+        $comment = $request->comment;
+        $post_id = (int)$request->post_id;
+        $user_id = auth()->user()->id;
+
+        $new_comment = new Comment;
+        $new_comment = Comment::create([
+            'post_id'    =>  $post_id,
+            'user_id'    =>  $user_id,
+            'comment'    =>  $comment,
+        ]);
+
+        return redirect()->back()->with('success', 'The comment was successfully added !')->
+            withUser_id($user_id);
+
     }
 
     /**
@@ -66,20 +66,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        if(is_numeric($id))
-        {
-            $category = Category::find($id);
-
-
-            return view('categories.single')->withCategory($category);
-        }
-//        $user = User::find(2);
-//        $articles = $user->articles;
-//        foreach ($articles as $article) {
-//            echo $article->name;
-//        }
-//        dd($user->articles);
-//        return view('welcome');
+        //
     }
 
     /**
@@ -90,7 +77,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-
+        $comment = Comment::find($id);
+        return redirect()->back()->with('success', 'Comment was successfully add to article !');
     }
 
     /**

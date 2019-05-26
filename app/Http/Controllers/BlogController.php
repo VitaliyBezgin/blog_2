@@ -15,7 +15,6 @@ class BlogController extends Controller
         if(is_numeric($slug))
         {
             $post = Post::find($slug);
-
             return Redirect::to(route('single', $post->slug), 301);
         }else{
             $post = Post::whereSlug($slug)->first();
